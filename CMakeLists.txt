@@ -6,7 +6,7 @@ project(Main)
 #SET(CMAKE_C_COMPILER /usr/bin/clang)
 #SET(CMAKE_CXX_COMPILER /usr/bin/clang++)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++14 -mavx2 -mfma")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++14 -mavx2 -mfma -DNDEBUG")
 
 #	Ckecking for packages
 
@@ -27,4 +27,4 @@ include_directories(
 #	Adding sources
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-add_executable(sak ${SOURCES})
+add_executable(prog ${SOURCES})
