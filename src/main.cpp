@@ -1,24 +1,32 @@
 #include <iostream>
+#include <numeric>
+#include <array>
+
 #include <sak/unroll.hpp>
 
 int main(){
-	int a = 0;
 
+	asm("nop");
 	asm("nop");
 	asm("nop");
 	asm("nop");
 	asm("nop");
 
 	sak::unroll<4>([&](auto K){
-		a += 1;
+		std::cout << "K = " << K << '\n';
+
+		std::array<float, std::decay_t<decltype(K)>::value> arr;
+		std::iota(arr.begin(), arr.end(), float(K));
+
+		for(auto& val : arr)
+			std::cout << val << '\n';
 	});
 
 	asm("nop");
 	asm("nop");
 	asm("nop");
 	asm("nop");
-
-	std::cout << a << '\n';
-
+	asm("nop");
+	
 	return 0;
 }
