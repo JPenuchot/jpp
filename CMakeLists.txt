@@ -26,5 +26,5 @@ include_directories(
 
 #	Adding sources
 
-file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "example/*.cpp")
 add_executable(prog ${SOURCES})
