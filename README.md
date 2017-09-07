@@ -34,3 +34,18 @@ int main(){
 ```
 
 This code will be automatically unrolled at compile time with the index of each instance available as a static value using `std::decay`.
+
+Output :
+
+```
+K = 0
+K = 1
+1
+K = 2
+2
+3
+K = 3
+3
+4
+5
+```
