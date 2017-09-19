@@ -11,12 +11,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++14 -mavx2 -mfma -DNDEBUG")
 #	Ckecking for packages
 
 find_package(Boost REQUIRED)
+find_package(Boost.SIMD REQUIRED)
 
 #	Adding includes
 
 include_directories(
 	"include/"
-	${Boost_LIBRARY_DIR}
+	${Boost_INCLUDE_DIRS}
+	${Boost.SIMD_INCLUDE_DIRS}
 )
 
 #	Linking libraries
