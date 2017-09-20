@@ -15,6 +15,6 @@ namespace sak {
 	class static_if<true> {
 		public:
 			template<typename Function>
-			BOOST_FORCEINLINE static void exec(Function&& F){ return F(); }
+			BOOST_FORCEINLINE static void exec(Function&& F){ F(); }
 	};
 };
