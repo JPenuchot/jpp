@@ -49,3 +49,33 @@ K = 3
 4
 5
 ```
+
+### static_if.hpp - Static if that accepts lambdas
+
+#### Example :
+
+```C++
+#include <iostream>
+#include <sak/static_if.hpp>
+
+int main(){
+
+	sak::static_if<1 == 0>::exec([&]{
+		std::cout << "1 == 0" << '\n';
+	});
+
+	sak::static_if<1 == 1>::exec([&]{
+		std::cout << "1 == 1" << '\n';
+	});
+
+	return 0;
+}
+```
+
+The code will be put in there only if the condition is true.
+
+Output :
+
+```
+1 == 1
+```
