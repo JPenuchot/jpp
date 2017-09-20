@@ -16,7 +16,7 @@ A collection of useful C++ code snippets.
 #include <numeric>
 #include <array>
 
-#include <sak/unroll.hpp>
+#include <sak/meta/unroll.hpp>
 
 int main(){
 	sak::unroll<4>([&](auto K){
@@ -56,15 +56,19 @@ K = 3
 
 ```C++
 #include <iostream>
-#include <sak/static_if.hpp>
+#include <sak/meta/static_if.hpp>
 
-int main(){
-
-	sak::static_if<1 == 0>::exec([&]{
+int main()
+{
+  //  Should NOT be compiled
+	sak::static_if<1 == 0>::exec([]
+  {
 		std::cout << "1 == 0" << '\n';
 	});
 
-	sak::static_if<1 == 1>::exec([&]{
+  //  Should be compiled and added to the executable
+	sak::static_if<1 == 1>::exec([]
+  {
 		std::cout << "1 == 1" << '\n';
 	});
 
