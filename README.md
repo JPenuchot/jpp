@@ -19,17 +19,17 @@ A collection of useful C++ code snippets.
 #include <sak/meta/unroll.hpp>
 
 int main(){
-	sak::unroll<4>([&](auto K){
-		std::cout << "K = " << K << '\n';
+  sak::unroll<4>([&](auto K){
+    std::cout << "K = " << K << '\n';
 
-		std::array<float, std::decay_t<decltype(K)>::value> arr;
+    std::array<float, std::decay_t<decltype(K)>::value> arr;
 		std::iota(arr.begin(), arr.end(), float(K));
 
-		for(auto& val : arr)
-			std::cout << val << '\n';
-	});
+    for(auto& val : arr)
+      std::cout << val << '\n';
+  });
 
-	return 0;
+  return 0;
 }
 ```
 
@@ -61,18 +61,18 @@ K = 3
 int main()
 {
   //  Should NOT be compiled
-	sak::static_if<1 == 0>::exec([]
+  sak::static_if<1 == 0>::exec([]
   {
-		std::cout << "1 == 0" << '\n';
-	});
+    std::cout << "1 == 0" << '\n';
+  });
 
   //  Should be compiled and added to the executable
-	sak::static_if<1 == 1>::exec([]
+  sak::static_if<1 == 1>::exec([]
   {
-		std::cout << "1 == 1" << '\n';
-	});
+    std::cout << "1 == 1" << '\n';
+  });
 
-	return 0;
+  return 0;
 }
 ```
 
