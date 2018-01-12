@@ -1,6 +1,7 @@
 ## Build files/folders
 
 .build/
+build/
 bin/
 
 ## External libs
