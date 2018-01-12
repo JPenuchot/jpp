@@ -4,8 +4,8 @@
 
 ORIGIN=$(pwd)
 
-DEFAULT_CMAKE_BUILD_DIR=".build"
-DEFAULT_OUTPUT_DIR="bin"
+DEFAULT_CMAKE_BUILD_DIR="build"
+#DEFAULT_OUTPUT_DIR="bin"
 
 CMAKE_BUILD_DIR=${1}
 OUTPUT_DIR=${2}
@@ -14,27 +14,18 @@ if [ -z "${CMAKE_BUILD_DIR}" ]; then
 	CMAKE_BUILD_DIR=${DEFAULT_CMAKE_BUILD_DIR}
 fi
 
-if [ -z "${OUTPUT_DIR}" ]; then
-	OUTPUT_DIR=${DEFAULT_OUTPUT_DIR}
-fi
-
 ## Making sure directories are there
 
-if [ ! -d "$CMAKE_BUILD_DIR" ]; then
-  mkdir ${CMAKE_BUILD_DIR}
-fi
+mkdir -p ${CMAKE_BUILD_DIR}
+mkdir -p ${CMAKE_BUILD_DIR}/release
+mkdir -p ${CMAKE_BUILD_DIR}/debug
 
-if [ ! -d "$OUTPUT_DIR" ]; then
-  mkdir ${OUTPUT_DIR}
-fi
-
-
-
-cd ${CMAKE_BUILD_DIR}
-cmake ..
+cd ${CMAKE_BUILD_DIR}/release
+cmake -DCMAKE_BUILD_TYPE=Release ../..
 make
-
 objdump -dC prog > prog.asm
 
-mv prog ${ORIGIN}/${OUTPUT_DIR}
-mv prog.asm ${ORIGIN}/${OUTPUT_DIR}
+cd ../debug
+cmake -DCMAKE_BUILD_TYPE=Debug ../..
+make
+objdump -dC prog > prog.asm
