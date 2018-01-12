@@ -2,31 +2,17 @@
 #include <numeric>
 #include <array>
 
-#include <sak/unroll.hpp>
+//#include <sak/meta/static_switch.hpp>
+#include <sak/meta/unroll.hpp>
 
-int main(){
 
-	asm("nop");
-	asm("nop");
-	asm("nop");
-	asm("nop");
-	asm("nop");
+int main()
+{
+  int i = 0;
 
-	sak::unroll<4>([&](auto K){
-		std::cout << "K = " << K << '\n';
+  sak::unroll<10>([&](auto z){ i++; });
 
-		std::array<float, std::decay_t<decltype(K)>::value> arr;
-		std::iota(arr.begin(), arr.end(), float(K));
+  std::cout << i << std::endl;
 
-		for(auto& val : arr)
-			std::cout << val << '\n';
-	});
-
-	asm("nop");
-	asm("nop");
-	asm("nop");
-	asm("nop");
-	asm("nop");
-	
-	return 0;
+  return 0;
 }
