@@ -6,7 +6,13 @@ project(Main)
 #SET(CMAKE_C_COMPILER /usr/bin/clang)
 #SET(CMAKE_CXX_COMPILER /usr/bin/clang++)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++14 -mavx2 -mfma -DNDEBUG")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}\
+  -std=c++14")
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} \
+  -O0")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} \
+  -O3 -mavx2 -mfma -DNDEBUG")
 
 #	Ckecking for packages
 
