@@ -18,12 +18,14 @@ A collection of useful C++ code snippets.
 
 #include <sak/meta/unroll.hpp>
 
-int main(){
-  sak::unroll<4>([&](auto K){
+int main()
+{
+  sak::unroll<4>([&](auto K)
+  {
     std::cout << "K = " << K << '\n';
 
     std::array<float, std::decay_t<decltype(K)>::value> arr;
-		std::iota(arr.begin(), arr.end(), float(K));
+    std::iota(arr.begin(), arr.end(), float(K));
 
     for(auto& val : arr)
       std::cout << val << '\n';
