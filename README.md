@@ -1,4 +1,4 @@
-# J++ | `jpp` - JPenuchot's
+# `J++ | jpp`
 
 A collection of useful C++ code snippets.
 
