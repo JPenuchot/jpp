@@ -3,29 +3,19 @@
 ## Managing default directories, args etc...
 
 ORIGIN=$(pwd)
+CMAKE_BUILD_DIR="bin"
+EXEC_NAME="prog"
 
-DEFAULT_CMAKE_BUILD_DIR="build"
-#DEFAULT_OUTPUT_DIR="bin"
+function build_for_config
+{
+  mkdir -p ${ORIGIN}/${CMAKE_BUILD_DIR}/$1
+  cd ${ORIGIN}/${CMAKE_BUILD_DIR}/$1
+  cmake -DCMAKE_BUILD_TYPE=$1 -G Ninja ${ORIGIN}
+  ninja
+  objdump -dC ${EXEC_NAME} > ${EXEC_NAME}.asm
+}
 
-CMAKE_BUILD_DIR=${1}
-OUTPUT_DIR=${2}
+## BUILD
 
-if [ -z "${CMAKE_BUILD_DIR}" ]; then
-	CMAKE_BUILD_DIR=${DEFAULT_CMAKE_BUILD_DIR}
-fi
-
-## Making sure directories are there
-
-mkdir -p ${CMAKE_BUILD_DIR}
-mkdir -p ${CMAKE_BUILD_DIR}/release
-mkdir -p ${CMAKE_BUILD_DIR}/debug
-
-cd ${CMAKE_BUILD_DIR}/release
-cmake -DCMAKE_BUILD_TYPE=Release ../..
-make
-objdump -dC prog > prog.asm
-
-cd ../debug
-cmake -DCMAKE_BUILD_TYPE=Debug ../..
-make
-objdump -dC prog > prog.asm
+build_for_config Release
+build_for_config Debug
