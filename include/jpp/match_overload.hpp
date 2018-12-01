@@ -66,4 +66,10 @@ inline auto overload(Fs... funs)
   return [=](const auto& v) { return match(v, funs...); };
 };
 
+template<typename... Fs>
+inline auto permissive_overload(Fs... funs)
+{
+  return [=](const auto& v) { return permissive_match(v, funs...); };
+};
+
 } //  << !namespace jpp --------------------------------------------------------
