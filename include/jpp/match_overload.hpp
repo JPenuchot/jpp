@@ -9,7 +9,7 @@ namespace jpp { // << namespace jpp --------------------------------------------
 
 using namespace std;
 
-template<typename T, typename... Fs>
+template<bool Permissive = false, typename T, typename... Fs>
 inline auto match(const T& v, Fs... funs)
 {
   if constexpr(sizeof...(funs) == 1)
@@ -37,7 +37,7 @@ inline auto match(const T& v, Fs... funs)
     using wrapped_args  = decltype(get_fun_args(fun));
 
     if constexpr
-      (     is_same<wrapped_args, pack_wrapper<decay_t<T>>>()
+      (   ( Permissive || is_same<wrapped_args, pack_wrapper<decay_t<T>>>() )
         &&  is_invocable<fun_t, T>()
       )
       //  As long as the function isn't the only one available,
@@ -49,9 +49,15 @@ inline auto match(const T& v, Fs... funs)
       //  Or else, we try the next one
       return apply([=, &v](auto... fs)
       {
-        return match(v, fs...);
+        return match<Permissive>(v, fs...);
       }, get<1>(splt));
   }
+}
+
+template<typename T, typename... Fs>
+inline auto permissive_match(const T& v, Fs... funs)
+{
+  return match<true>(v, funs...);
 }
 
 template<typename... Fs>
