@@ -10,7 +10,6 @@ A collection of useful C++ code snippets.
 ## File structure
 
 ```
-.
 ├── build.sh                              // Build script
 ├── CMakeLists.txt
 ├── example                               // Few examples
@@ -21,5 +20,5 @@ A collection of useful C++ code snippets.
 │       ├── match_overload.hpp            // ML-style match implementation
 │       ├── parameter_pack_reduction.hpp  // Arbitrary parameter pack reductor
 │       └── unroll.hpp                    // Arbitrary lambda unroller
-├── README.md                             // This
+└── README.md                             // This
 ```
