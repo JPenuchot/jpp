@@ -19,7 +19,6 @@ inline auto reduce(F&& f, T&& hd, Ts&&... tl)
   return f(forward<T>(hd), reduce(forward<F>(f), forward<Ts>(tl)...));
 }
 
-
 template<typename F>
 inline auto reduction(F&& f)
 {
