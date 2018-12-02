@@ -1,28 +1,10 @@
-## Build files/folders
+## Executable
 
-.build/
-build/
-bin/
+jpp
 
-## External libs
+## Compile commands
 
-ext/
-
-## Code comparison
-
-fast-asm-compare/
-
-## CMake
-
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
+*.o.json
 
 ## C++
 
