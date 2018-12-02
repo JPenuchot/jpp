@@ -1,7 +1,6 @@
 #pragma once
 
 #include <type_traits>
-#include <tuple>
 
 #include "function_helpers.hpp"
 
@@ -9,67 +8,53 @@ namespace jpp { // << namespace jpp --------------------------------------------
 
 using namespace std;
 
-template<bool Permissive = false, typename T, typename... Fs>
-inline auto match(const T& v, Fs... funs)
+template<bool Permissive = false, typename T, typename F>
+inline auto match(T&& v, F&& hd)
 {
-  if constexpr(sizeof...(funs) == 1)
-  {
-    //  Last function will simply be invoked
-    //  without requiring a perfect match
-    get<0>(tuple(funs...))(v);
-  }
+  return hd(forward<T>(v));
+}
 
+template<bool Permissive = false, typename T, typename F, typename... Fs>
+inline auto match(T&& v, F&& hd, Fs&&... tl)
+{
+  //  Getting the function's argument into a pack_wrapper
+  using wrapped_T     = pack_wrapper<decay_t<T>>;
+  using wrapped_F_arg = decltype(get_fun_args(hd));
+
+  if constexpr
+    (    ( Permissive || is_same<wrapped_T, wrapped_F_arg>() )
+      && is_invocable<F, T>()
+    )
+    //  As long as the function isn't the only one available,
+    //  its parameter must match *exactly* the type of the
+    //  matching value to avoid implicit conversions
+    return hd(forward<T>(v));
   else
-  {
-    //  Split returns the first element of a parameter pack and
-    //  the rest of the pack as two separate elements in a tuples
-    auto split = [](auto hd, auto... tl)
-    {
-      return tuple(hd, tuple(tl...));
-    };
-
-    //  Splitting parameter pack into its head and tail
-    auto splt           = split(funs...);
-    auto fun            = get<0>(splt);
-
-    using fun_t         = decltype(get<0>(splt));
-    //  Getting the function's arguments into a pack_wrapper
-    using wrapped_args  = decltype(get_fun_args(fun));
-
-    if constexpr
-      (   ( Permissive || is_same<wrapped_args, pack_wrapper<decay_t<T>>>() )
-        &&  is_invocable<fun_t, T>()
-      )
-      //  As long as the function isn't the only one available,
-      //  its parameter must match *exactly* the type of the
-      //  matching value to avoid implicit conversions
-      return get<0>(splt)(v);
-
-    else
-      //  Or else, we try the next one
-      return apply([=, &v](auto... fs)
-      {
-        return match<Permissive>(v, fs...);
-      }, get<1>(splt));
-  }
+    return match<Permissive>(forward<T>(v), forward<Fs>(tl)...);
 }
 
 template<typename T, typename... Fs>
-inline auto permissive_match(const T& v, Fs... funs)
+inline auto permissive_match(T&& v, Fs&&... funs)
 {
-  return match<true>(v, funs...);
+  return match<true>(forward<T>(v), forward<Fs>(funs)...);
 }
 
 template<typename... Fs>
-inline auto overload(Fs... funs)
+inline auto overload(Fs&&... funs)
 {
-  return [=](const auto& v) { return match(v, funs...); };
-};
+  return [=](auto&& v)
+  {
+    return match(forward<decltype(v)>(v), forward<Fs>(funs)...);
+  };
+}
 
 template<typename... Fs>
-inline auto permissive_overload(Fs... funs)
+inline auto permissive_overload(Fs&&... funs)
 {
-  return [=](const auto& v) { return permissive_match(v, funs...); };
-};
+  return [=](auto&& v)
+  {
+    return permissive_match(forward<decltype(v)>(v), forward<Fs>(funs)...);
+  };
+}
 
 } //  << !namespace jpp --------------------------------------------------------
