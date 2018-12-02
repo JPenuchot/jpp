@@ -39,22 +39,19 @@ inline auto permissive_match(T&& v, Fs&&... funs)
   return match<true>(forward<T>(v), forward<Fs>(funs)...);
 }
 
-template<typename... Fs>
+template<bool Permissive = false, typename... Fs>
 inline auto overload(Fs&&... funs)
 {
-  return [=](auto&& v)
+  return [&](auto&& v)
   {
-    return match(forward<decltype(v)>(v), forward<Fs>(funs)...);
+    return match<Permissive>(forward<decltype(v)>(v), forward<Fs>(funs)...);
   };
 }
 
 template<typename... Fs>
 inline auto permissive_overload(Fs&&... funs)
 {
-  return [=](auto&& v)
-  {
-    return permissive_match(forward<decltype(v)>(v), forward<Fs>(funs)...);
-  };
+  return overload<true>(forward<Fs>(funs)...);
 }
 
 } //  << !namespace jpp --------------------------------------------------------
