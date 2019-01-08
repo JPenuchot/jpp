@@ -4,8 +4,7 @@ A collection of useful C++ code snippets.
 
 ## Installation/Requirements
 
--	Boost
--	A decent C++17 compiler
+- A decent C++17 compiler
 
 ## File structure
 
