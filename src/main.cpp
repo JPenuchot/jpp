@@ -5,6 +5,7 @@
 
 #include <jpp/unroll.hpp>
 #include <jpp/match_overload.hpp>
+#include <jpp/parameter_pack_reduction.hpp>
 
 void fun(int){}
 
@@ -47,6 +48,16 @@ int main()
       );
     cout << '\n';
   });
+
+  auto sum = jpp::reduce
+    ( [](auto&& a, auto&& b)
+      {
+        return a + b;
+      }
+    , 1, 2, 3., 4.f
+    );
+
+  cout << sum << '\n';
 
   return 0;
 }
