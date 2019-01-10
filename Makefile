@@ -14,7 +14,7 @@ OBJ     = $(CPP_OBJ) $(C_OBJ)
 # Dependency files
 DEPS    = $(OBJ:.o=.d)
 
-all: $(NAME)
+all: $(NAME) #tests
 
 # Compilation
 .cpp.o:
@@ -29,7 +29,11 @@ $(NAME): $(OBJ)
 # Dependencies
 -include $(DEPS)
 
+tests:
+	$(MAKE) -C tests run
+
 clean:
 	rm -f $(NAME) $(OBJ) $(DEPS)
+	$(MAKE) -C tests clean
 
-.PHONY: all clean
+.PHONY: all clean tests
