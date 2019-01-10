@@ -8,24 +8,32 @@ namespace jpp { // << namespace jpp --------------------------------------------
 using namespace std;
 
 template<typename F, typename T>
-inline auto reduce(F&&, T&& hd)
+struct Adapter
 {
-  return forward<T>(hd);
-}
+  Adapter(F&& f_, T val_): f(f_),val(std::forward<T>(val_)){}
 
-template<typename F, typename T, typename... Ts>
-inline auto reduce(F&& f, T&& hd, Ts&&... tl)
-{
-  return f(forward<T>(hd), reduce(forward<F>(f), forward<Ts>(tl)...));
-}
-
-template<typename F>
-inline auto reduction(F&& f)
-{
-  return [&](auto&&... args)
+  template<typename T2>
+  inline constexpr auto operator | (Adapter<F,T2> &&other) &&
   {
-    return reduce(forward<F>(f), forward<decltype(args)>(args)...);
-  };
+    using namespace std;
+    return Adapter< F
+                  , decltype( f ( forward<T2>(other.val)
+                                , forward<T>(val)
+                                )
+                            )
+                  >
+                  ( forward<F>(f)
+                  , f (forward<T2>(other.val), forward<T>(val)));
+  }
+  F &f;
+  T val;
+};
+
+template<typename F, typename... Args>
+constexpr auto reduce(F &&f, Args&&...args)
+{
+  using namespace std;
+  return ( Adapter<F, Args> ( forward<F>(f) , forward<Args>(args)) | ... ).val;
 }
 
 } //  << !namespace jpp --------------------------------------------------------
