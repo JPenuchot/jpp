@@ -8,10 +8,8 @@
 void test_unroll()
 {
   int i = 0;
-  jpp::unroll<10>([&](auto)
-  {
-    i++;
-  });
+
+  jpp::unroll<5>([&](auto I) { i += I; });
 
   assert(i == 10, "Unroll test failed.");
 }
