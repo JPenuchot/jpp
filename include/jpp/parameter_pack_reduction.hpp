@@ -10,23 +10,20 @@ using namespace std;
 template<typename F, typename T>
 struct Adapter
 {
-  Adapter(F&& f_, T val_): f(f_),val(std::forward<T>(val_)){}
-
-  template<typename T2>
-  inline constexpr auto operator | (Adapter<F,T2> &&other) &&
-  {
-    using namespace std;
-    return Adapter< F
-                  , decltype( f ( forward<T2>(other.val)
-                                , forward<T>(val)
-                                )
-                            )
-                  >
-                  ( forward<F>(f)
-                  , f (forward<T2>(other.val), forward<T>(val)));
-  }
   F &f;
   T val;
+
+  Adapter(F&& f_, T val_): f(f_),val(std::forward<T>(val_)){}
+
+  template<typename Tother>
+  inline constexpr auto operator | (Adapter<F,Tother> && other) &&
+  {
+    using namespace std;
+    using NewVal_t = decltype(f(forward<Tother>(other.val), forward<T>(val)));
+    return Adapter<F, NewVal_t> ( forward<F>(f)
+                                , f(forward<Tother>(other.val), forward<T>(val))
+                                );
+  }
 };
 
 template<typename F, typename... Args>
