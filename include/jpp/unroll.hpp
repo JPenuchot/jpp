@@ -29,4 +29,19 @@ inline auto unroll(F&& f)
   unroll_impl(make_index_sequence<N>{}, forward<F>(f));
 }
 
+template<int N, typename F, typename InputIt>
+inline auto unrolled_for_each(F&& f, InputIt first, InputIt last)
+{
+  for(;first + N <= last; first += N)
+  {
+    unroll<N>([&](auto)
+    {
+      f(*first);
+      first++;
+    });
+  }
+
+  for(; first < last; first++) f(*first);
+}
+
 } //  << !namespace jpp --------------------------------------------------------
