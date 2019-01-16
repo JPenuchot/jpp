@@ -30,7 +30,7 @@ inline auto unroll(F&& f)
 }
 
 template<int N, typename F, typename InputIt>
-inline auto unrolled_for_each(F&& f, InputIt first, InputIt last)
+inline auto unrolled_for_each(InputIt first, InputIt last, F&& f)
 {
   for(;first + N <= last; first += N)
   {
