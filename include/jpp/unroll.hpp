@@ -4,13 +4,11 @@
 
 namespace jpp { // << namespace jpp --------------------------------------------
 
-using namespace std;
-
 template<typename F, size_t... N>
-inline auto unroll_impl(index_sequence<N...>&&, F&& f)
+inline auto unroll_impl(std::index_sequence<N...>&&, F&& f)
 {
   //  Expanding parameter pack N by calling f on each of its elements
-  ( f(integral_constant<size_t, N>{}) , ...);
+  ( f(std::integral_constant<size_t, N>{}) , ...);
 }
 
 /**
@@ -26,13 +24,13 @@ inline auto unroll_impl(index_sequence<N...>&&, F&& f)
 template<int N, typename F>
 inline auto unroll(F&& f)
 {
-  unroll_impl(make_index_sequence<N>{}, forward<F>(f));
+  unroll_impl(std::make_index_sequence<N>{}, std::forward<F>(f));
 }
 
 template<int N, typename F, typename InputIt>
 inline auto unrolled_for_each(InputIt first, InputIt last, F&& f)
 {
-  for(;first + N <= last; first += N)
+  while(first + N <= last)
   {
     unroll<N>([&](auto)
     {
@@ -41,7 +39,11 @@ inline auto unrolled_for_each(InputIt first, InputIt last, F&& f)
     });
   }
 
-  for(; first < last; first++) f(*first);
+  while(first < last)
+  {
+    f(*first);
+    first++;
+  }
 }
 
 } //  << !namespace jpp --------------------------------------------------------

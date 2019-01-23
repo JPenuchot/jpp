@@ -6,23 +6,22 @@
 
 namespace jpp { // << namespace jpp --------------------------------------------
 
-using namespace std;
-
 template<bool Permissive = false, typename T, typename F>
 inline auto match(T&& v, F&& hd)
 {
-  return hd(forward<T>(v));
+  return hd(std::forward<T>(v));
 }
 
 template<bool Permissive = false, typename T, typename F, typename... Fs>
 inline auto match(T&& v, F&& hd, Fs&&... tl)
 {
+  using namespace std;
   //  Getting the function's argument into a pack_wrapper
   using wrapped_T     = pack_wrapper<decay_t<T>>;
   using wrapped_F_arg = decltype(get_fun_args(hd));
 
   if constexpr
-    (    ( Permissive || is_same<wrapped_T, wrapped_F_arg>() )
+    ( ( Permissive || is_same<wrapped_T, wrapped_F_arg>() )
       && is_invocable<F, T>()
     )
     //  As long as the function isn't the only one available,
@@ -36,12 +35,13 @@ inline auto match(T&& v, F&& hd, Fs&&... tl)
 template<typename T, typename... Fs>
 inline auto permissive_match(T&& v, Fs&&... funs)
 {
-  return match<true>(forward<T>(v), forward<Fs>(funs)...);
+  return match<true>(std::forward<T>(v), std::forward<Fs>(funs)...);
 }
 
 template<bool Permissive = false, typename... Fs>
 inline auto overload(Fs&&... funs)
 {
+  using namespace std;
   return [&](auto&& v)
   {
     return match<Permissive>(forward<decltype(v)>(v), forward<Fs>(funs)...);
@@ -51,7 +51,7 @@ inline auto overload(Fs&&... funs)
 template<typename... Fs>
 inline auto permissive_overload(Fs&&... funs)
 {
-  return overload<true>(forward<Fs>(funs)...);
+  return overload<true>(std::forward<Fs>(funs)...);
 }
 
 } //  << !namespace jpp --------------------------------------------------------
