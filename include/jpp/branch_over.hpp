@@ -32,7 +32,7 @@ auto branch_over(T v, F&& f, Args... args)
   };
 
   //  Reduce using the custom operator + overload
-  return ( cond_invoke(std::integral_constant<int, Vs>{}) + ... );
+  return ( cond_invoke(std::integral_constant<T, Vs>{}) + ... );
 }
 
 } //  << !namespace jpp --------------------------------------------------------
