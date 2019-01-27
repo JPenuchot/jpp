@@ -6,6 +6,7 @@
 #include <jpp/unroll.hpp>
 #include <jpp/match_overload.hpp>
 #include <jpp/parameter_pack_reduction.hpp>
+#include <jpp/branch_over.hpp>
 
 void fun(int){}
 
@@ -58,6 +59,21 @@ int main()
     );
 
   cout << sum << '\n';
+
+  jpp::branch_over<int, 1, 2, 3>(2, [](auto V) -> int
+  {
+    if constexpr (V() == 1)
+    {
+      std::cout << "branch: 1\n";
+      return 1;
+    }
+    else if constexpr (V() == 2)
+    {
+      std::cout << "branch: 2\n";
+      return 2;
+    }
+    return 0;
+  });
 
   return 0;
 }
