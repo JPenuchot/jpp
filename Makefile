@@ -24,7 +24,7 @@ all: $(NAME) #tests
 
 # Linking
 $(NAME): $(OBJ)
-	$(CXX) -o $@ $(OBJ) $(LD_FLAGS)
+	$(CXX) -o example $(OBJ) $(LD_FLAGS)
 
 # Dependencies
 -include $(DEPS)
