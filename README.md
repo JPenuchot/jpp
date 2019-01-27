@@ -15,6 +15,7 @@ A collection of useful C++ code snippets.
 │   └── main.cpp
 ├── include
 │   └── jpp
+│       ├── branch_over.hpp               // Switch-over-enum generator
 │       ├── function_helpers.hpp          // Helpers for manipulating functions
 │       ├── match_overload.hpp            // ML-style match implementation
 │       ├── parameter_pack_reduction.hpp  // Arbitrary parameter pack reductor
