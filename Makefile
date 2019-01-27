@@ -33,7 +33,10 @@ tests:
 	$(MAKE) -C tests run
 
 clean:
-	rm -f $(NAME) $(OBJ) $(DEPS)
+	rm -f example $(OBJ) $(DEPS)
 	$(MAKE) -C tests clean
+
+run : $(NAME)
+	./example
 
 .PHONY: all clean tests
