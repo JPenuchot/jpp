@@ -11,7 +11,7 @@ A collection of useful C++ code snippets.
 ```
 ├── build.sh                              // Build script
 ├── CMakeLists.txt
-├── example                               // Few examples
+├── src                                   // Few examples
 │   └── main.cpp
 ├── include
 │   └── jpp
@@ -21,4 +21,23 @@ A collection of useful C++ code snippets.
 │       ├── parameter_pack_reduction.hpp  // Arbitrary parameter pack reductor
 │       └── unroll.hpp                    // Arbitrary lambda unroller
 └── README.md                             // This
+```
+
+```
+├── LICENSE.txt
+├── Makefile
+├── config.mk                             //  Makefile config file
+├── README.md                             //  This
+├── include
+│   └── jpp
+│       ├── branch_over.hpp               //  Switch-over-enum generator
+│       ├── function_helpers.hpp          //  Helpers for manipulating functions
+│       ├── match_overload.hpp            //  ML-style match implementation
+│       ├── parameter_pack_reduction.hpp  //  Arbitrary parameter pack reductor
+│       └── unroll.hpp                    //  Arbitrary lambda unroller
+├── src                                   //
+│   └── main.cpp
+└── tests                                 //  Tests
+    │
+   ...
 ```
