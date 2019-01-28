@@ -1,5 +1,6 @@
 #pragma once
 
+#include <utility>
 #include <optional>
 
 namespace jpp { // << namespace jpp --------------------------------------------
@@ -14,7 +15,7 @@ std::optional<T> operator + (std::optional<T> && oa, std::optional<T> && ob)
 }}
 
 template<typename T, T... Vs, typename F, typename ...Args>
-auto branch_over(T v, F&& f, Args... args)
+auto branch_over(T v, F&& f, Args&&... args)
 {
   //  Using dummy namespace to access the + operator overload
   using namespace __branch_over;
@@ -27,7 +28,7 @@ auto branch_over(T v, F&& f, Args... args)
   auto cond_invoke = [&](auto Iv) -> std::optional<ret_t>
   {
     if (Iv() == v)
-      return std::optional<ret_t>(f(Iv, args...));
+      return std::optional<ret_t>(f(Iv, std::forward<Args>(args)...));
     return std::optional<ret_t>(std::nullopt);
   };
 
