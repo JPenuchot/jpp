@@ -60,7 +60,7 @@ int main()
 
   cout << sum << '\n';
 
-  jpp::branch_over<int, 1, 2, 3>(2, [](auto V) -> int
+  jpp::branch_over<int, 1, 2, 3>([](auto V) -> int
   {
     if constexpr (V() == 1)
     {
@@ -73,7 +73,7 @@ int main()
       return 2;
     }
     return 0;
-  });
+  }, 2);
 
   return 0;
 }

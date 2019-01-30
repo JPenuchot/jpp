@@ -15,7 +15,7 @@ std::optional<T> operator + (std::optional<T> && oa, std::optional<T> && ob)
 }}
 
 template<typename T, T... Vs, typename F, typename ...Args>
-auto branch_over(T v, F&& f, Args&&... args)
+auto branch_over(F&& f, T v, Args&&... args)
 {
   //  Using dummy namespace to access the + operator overload
   using namespace __branch_over;
