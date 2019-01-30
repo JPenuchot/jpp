@@ -23,17 +23,32 @@ auto branch_over(F&& f, T v, Args&&... args)
   //  f's return type
   using ret_t = decltype(f(std::integral_constant<T, T{}>{}, args...));
 
-  //  Checks whether Iv() == v, if so returns the result of f(Iv, args...),
-  //  or else an empty std::optional
-  auto cond_invoke = [&](auto Iv) -> std::optional<ret_t>
+  if constexpr(!std::is_same<void, ret_t>())
   {
-    if (Iv() == v)
-      return std::optional<ret_t>(f(Iv, std::forward<Args>(args)...));
-    return std::optional<ret_t>(std::nullopt);
-  };
+    using opt_t = std::optional<ret_t>;
+    //  Checks whether Iv() == v, if so returns the result of f(Iv, args...),
+    //  or else an empty std::optional
+    auto cond_invoke = [&](auto Iv) -> opt_t
+    {
+      if (Iv() == v)
+        return opt_t(f(Iv, std::forward<Args>(args)...));
+      return opt_t(std::nullopt);
+    };
 
-  //  Reduce using the custom operator + overload
-  return ( cond_invoke(std::integral_constant<T, Vs>{}) + ... );
+    //  Reduce using the custom operator + overload
+    return ( cond_invoke(std::integral_constant<T, Vs>{}) + ... );
+  }
+
+  else
+  {
+    auto cond_invoke = [&](auto Iv)
+    {
+      if(Iv() == v) f(Iv, std::forward<Args>(args)...);
+    };
+
+    ( cond_invoke(std::integral_constant<T, Vs>{}) , ... );
+  }
+
 }
 
 } //  << !namespace jpp --------------------------------------------------------

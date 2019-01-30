@@ -43,4 +43,22 @@ void test_branch_over()
 
   assert(!jpp::branch_over<tenum, val1, val2>(fun2, val3)
         , "branch_over return value should be empty");
+
+  int val;
+
+  auto fun3 = [&](auto V) -> void
+  {
+    if constexpr (V() == val1)       val += 1;
+    else if constexpr (V() == val2)  val += 2;
+  };
+
+  val = 0;
+  jpp::branch_over<tenum, val1, val2>(fun3, val1);
+  assert(val == 1, "Incorrect branch_over execution flow");
+
+  jpp::branch_over<tenum, val1, val2>(fun3, val2);
+  assert(val == 3, "Incorrect branch_over execution flow");
+
+  jpp::branch_over<tenum, val1, val2>(fun3, val3);
+  assert(val == 3, "Incorrect branch_over execution flow");
 }
