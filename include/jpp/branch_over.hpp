@@ -14,6 +14,23 @@ std::optional<T> operator + (std::optional<T> && oa, std::optional<T> && ob)
   return ob;
 }}
 
+/**
+ * @brief      Generates a switch cascade over a series of values known at
+ * compile-time to avoid old C-style switch cascades...
+ *
+ * @param[in]  f          Function template or polymorph lambda to branch over
+ * @param[in]  v          Value used to switch over
+ * @param[in]  args       Optional arguments for the function that will be
+ * forwarded as-is
+ *
+ * @tparam     T          Type of the value to switch over
+ * @tparam     Vs         Values to compare v with
+ * @tparam     F          Function type
+ * @tparam     Args       Optional argument types
+ *
+ * @return     void if the function has a void return value, otherwise its
+ * return value will be wrapped in an std::optional
+ */
 template<typename T, T... Vs, typename F, typename ...Args>
 auto branch_over(F&& f, T v, Args&&... args)
 {
@@ -46,14 +63,11 @@ auto branch_over(F&& f, T v, Args&&... args)
     //  Checks whether Iv() == v, if so just invokes f(Iv, args...),
     //  or else nothing
     auto cond_invoke = [&](auto Iv)
-    {
-      if(Iv() == v) f(Iv, std::forward<Args>(args)...);
-    };
+    { if(Iv() == v) f(Iv, std::forward<Args>(args)...); };
 
     //  We can use the , operator now: no std::optional check going on here
     ( cond_invoke(std::integral_constant<T, Vs>{}) , ... );
   }
-
 }
 
 } //  << !namespace jpp --------------------------------------------------------
