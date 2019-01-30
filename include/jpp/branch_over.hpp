@@ -23,6 +23,7 @@ auto branch_over(F&& f, T v, Args&&... args)
   //  f's return type
   using ret_t = decltype(f(std::integral_constant<T, T{}>{}, args...));
 
+  //  In case the function has some return value
   if constexpr(!std::is_same<void, ret_t>())
   {
     using opt_t = std::optional<ret_t>;
@@ -39,13 +40,17 @@ auto branch_over(F&& f, T v, Args&&... args)
     return ( cond_invoke(std::integral_constant<T, Vs>{}) + ... );
   }
 
+  //  In case the function has void return type (faster, yay)
   else
   {
+    //  Checks whether Iv() == v, if so just invokes f(Iv, args...),
+    //  or else nothing
     auto cond_invoke = [&](auto Iv)
     {
       if(Iv() == v) f(Iv, std::forward<Args>(args)...);
     };
 
+    //  We can use the , operator now: no std::optional check going on here
     ( cond_invoke(std::integral_constant<T, Vs>{}) , ... );
   }
 
