@@ -43,5 +43,8 @@ void test_enum()
   catch (std::runtime_error const& e) { pass_expt = true; }
   assert( pass_expt
         , "Exception not thrown by static_switch_over on affectation.");  
+
+  test_t val = v_legal;
+  (void)val;
 }
 

@@ -19,6 +19,8 @@ struct enum_t
 {
   T val;
 
+  enum_t() = delete;
+
   enum_t(T&& other)
   {
     if(! ( ... || (other == vals) ) ) 
