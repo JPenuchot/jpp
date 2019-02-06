@@ -42,7 +42,7 @@ auto branch_over(F&& f, T v, Args&&... args)
   using ret_t = decltype(f(integral_constant<T, T{}>{}, args...));
 
   //  In case the function has some return value
-  if constexpr(!is_same<void, ret_t>())
+  if constexpr(!is_void<ret_t>())
   {
     using opt_t = optional<ret_t>;
 
