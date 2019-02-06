@@ -3,6 +3,7 @@
 #include <tuple>
 #include <array>
 
+#include <jpp/enum.hpp>
 #include <jpp/unroll.hpp>
 #include <jpp/match_overload.hpp>
 #include <jpp/parameter_pack_reduction.hpp>
@@ -74,6 +75,14 @@ int main()
     }
     return 0;
   }, 2);
+
+  using test_t = enum_t<int, 1, 2, 3, 4>;
+  test_t::static_switch_over( 2
+                            , []() { cout << "1\n"; }
+                            , []() { cout << "2\n"; }
+                            , []() { cout << "3\n"; }
+                            , []() { cout << "4\n"; }
+                            );
 
   return 0;
 }
