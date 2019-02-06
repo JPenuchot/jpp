@@ -12,12 +12,13 @@ MANPREFIX = $(PREFIX)/share/man
 
 # Includes/Libs
 CXXINCS = -I../include -Iinclude
-CCINCS   = -I../include -Iinclude
-LIBS     = -lm
+CCINCS  = -I../include -Iinclude
+LIBS    = -lm
 
 # Flags
 COMMON_FLAGS = -DVERSION=\"$(VERSION)\"\
 							 -Wall -Wextra -Werror\
+							 -fno-rtti\
 							 -O3 -march=native
 
 ADD_CXXFLAGS  = $(COMMON_FLAGS) -std=c++17
