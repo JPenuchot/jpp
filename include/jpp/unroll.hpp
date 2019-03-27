@@ -8,7 +8,7 @@ template<typename F, size_t... N>
 inline auto unroll_impl(std::index_sequence<N...>&&, F&& f)
 {
   //  Expanding parameter pack N by calling f on each of its elements
-  ( f(std::integral_constant<size_t, N>{}) , ...);
+  ( f(std::integral_constant<size_t, N>{}) , ... );
 }
 
 /**
