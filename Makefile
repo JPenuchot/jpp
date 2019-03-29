@@ -36,7 +36,14 @@ clean:
 	rm -f example $(OBJ) $(DEPS)
 	$(MAKE) -C tests clean
 
-run : $(NAME)
+run: $(NAME)
 	./example
+
+install:
+	mkdir -p $(DESTDIR)$(PREFIX)/include
+	cp -rf include/jpp $(DESTDIR)$(PREFIX)/include
+
+uninstall:
+	rm -rf $(DESTDIR)$(PREFIX)/include/jpp
 
 .PHONY: all clean tests
