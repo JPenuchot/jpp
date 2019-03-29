@@ -39,7 +39,7 @@ clean:
 run: $(NAME)
 	./example
 
-install:
+install: tests
 	mkdir -p $(DESTDIR)$(PREFIX)/include
 	cp -rf include/jpp $(DESTDIR)$(PREFIX)/include
 
