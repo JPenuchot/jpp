@@ -5,7 +5,7 @@
 
 namespace jpp { // << namespace jpp --------------------------------------------
 
-namespace parameter_pack_reduction_ {
+namespace _parameter_pack_reduction_ {
 template<typename F, typename T>
 struct Adapter
 {
@@ -31,7 +31,7 @@ template<typename F, typename... Args>
 constexpr auto reduce(F &&f, Args&&...args)
 {
   using namespace std;
-  using namespace parameter_pack_reduction_;
+  using namespace _parameter_pack_reduction_;
 
   return ( Adapter<F, Args> ( forward<F>(f) , forward<Args>(args)) | ... ).val;
 }
