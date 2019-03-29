@@ -3,8 +3,8 @@
 include config.mk
 
 # Sources
-CXXSRC = $(shell find src -name *.cpp)
-CCSRC  = $(shell find src -name *.c)
+CXXSRC = $(shell find src -name "*.cpp")
+CCSRC  = $(shell find src -name "*.c")
 
 # Objects
 CXXOBJ = $(CXXSRC:.cpp=.o)
